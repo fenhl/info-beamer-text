@@ -49,7 +49,9 @@ function write_inner(font, simulate, text, size, min_x, max_x, min_y, max_y, hal
                 elseif halign == "right" then
                     x = max_x - font:width(line, size)
                 end
-                font:write(x, y, line, size, r, g, b, a)
+                if not simulate then
+                    font:write(x, y, line, size, r, g, b, a)
+                end
                 y = y + size
                 height = height + size
                 line = text[paragraph][word]
@@ -70,7 +72,9 @@ function write_inner(font, simulate, text, size, min_x, max_x, min_y, max_y, hal
         elseif halign == "right" then
             x = max_x - font:width(line, size)
         end
-        font:write(x, y, line, size, r, g, b, a)
+        if not simulate then
+            font:write(x, y, line, size, r, g, b, a)
+        end
     end
     return {width=width, height=height}
 end
