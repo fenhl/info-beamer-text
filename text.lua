@@ -55,7 +55,7 @@ end
 
 return function(default_font, WIDTH, HEIGHT)
     return function(args)
-        write_inner(
+        return write_inner(
             args.font or default_font,
             args.text,
             args.size or 100,
