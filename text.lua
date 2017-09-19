@@ -43,8 +43,8 @@ function write_inner(font, text, size, min_x, max_x, min_y, max_y, halign)
                 y = y + size
                 height = height + size
                 line = text[paragraph][word]
-                if font:width(line) > width then
-                    width = font:width(line)
+                if font:width(line, size) > width then
+                    width = font:width(line, size)
                 end
             else
                 line = test_line
