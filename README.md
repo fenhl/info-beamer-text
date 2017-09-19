@@ -2,23 +2,31 @@ This is a helper library for rendering rich text with [info-beamer](https://gith
 
 # Usage
 
+```lua
+util.resource_loader{
+    "some_font.ttf",
+}
+local write = (require "text")(some_font, WIDTH, HEIGHT)
+write{text={{"Hello", "world!"}}}
+```
+
 **TODO**
 
 # Features
 
 Features with a checkmark are available, unchecked features are planned.
 
-- [ ] Write text given in a specific format to the screen. Format example:
+- [x] Write text given in a specific format to the screen. Format example:
     ```lua
     {{"This", "is", "a", "paragraph,"}, {"and", "this", "is", "another", "paragraph."}}
     ```
-- [ ] Automatic word wrapping
+- [x] Automatic word wrapping
 - [ ] Simulation mode: only determine width and height without rendering
-- [ ] Custom base text size
+- [x] Custom base text size
 - [ ] Variable text size
 - [ ] Text colors and opacity
-- [ ] Specify bounds for the text area
-- [ ] Horizontal alignment (left, center, or right)
+- [x] Specify bounds for the text area
+- [x] Horizontal alignment (left, center, or right)
 - [ ] Vertical alignment (top, middle, or bottom)
 - [ ] Custom word separators, maybe-breaks, and hyphenation
 - [ ] Custom emoji
