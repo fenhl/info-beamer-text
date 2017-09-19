@@ -6,7 +6,8 @@ This is a helper library for rendering rich text with [info-beamer](https://gith
 util.resource_loader{
     "some_font.ttf",
 }
-local write = (require "text")(some_font, WIDTH, HEIGHT)
+local text = require "text"
+local write = text(some_font, WIDTH, HEIGHT)
 write{text={{"Hello", "world!"}}}
 ```
 
