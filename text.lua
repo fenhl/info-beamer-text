@@ -8,6 +8,7 @@ function write_inner(font, text, size, min_x, max_x, min_y, max_y, halign)
     local y = min_y --TODO valign
     -- then, draw the text
     local height = 0
+    local width = 0
     local line
     local line_width
     local num_paragraphs = #text
@@ -42,8 +43,14 @@ function write_inner(font, text, size, min_x, max_x, min_y, max_y, halign)
                 y = y + size
                 height = height + size
                 line = text[paragraph][word]
+                if font:width(line) > width then
+                    width = font:width(line)
+                end
             else
                 line = test_line
+                if line_width > width then
+                    width = line_width
+                end
             end
         end
         if halign == "left" then
@@ -55,7 +62,7 @@ function write_inner(font, text, size, min_x, max_x, min_y, max_y, halign)
         end
         font:write(x, y, line, size, r, g, b, a)
     end
-    return height --TODO also return width
+    return {width=width, height=height}
 end
 
 return function(default_font, WIDTH, HEIGHT)

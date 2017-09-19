@@ -8,7 +8,8 @@ util.resource_loader{
 }
 local text = require "text"
 local write = text(some_font, WIDTH, HEIGHT)
-write{text={{"Hello", "world!"}}}
+local dimensions = write{text={{"Hello", "world!"}}}
+-- `dimensions` is a table containing `width` and `height` in pixels
 ```
 
 **TODO**
