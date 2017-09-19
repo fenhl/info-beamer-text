@@ -7,6 +7,7 @@ function write_inner(font, text, size, min_x, max_x, min_y, max_y, halign)
     -- first, calculate y offset from number of lines
     local y = min_y --TODO valign
     -- then, draw the text
+    local height = 0
     local line
     local line_width
     local num_paragraphs = #text
@@ -16,6 +17,9 @@ function write_inner(font, text, size, min_x, max_x, min_y, max_y, halign)
     for paragraph = 1, num_paragraphs do
         if paragraph > 1 then
             y = y + size * 1.5
+            height = height + size * 1.5
+        else
+            height = height + size
         end
         line = ""
         num_words = #text[paragraph]
@@ -36,6 +40,7 @@ function write_inner(font, text, size, min_x, max_x, min_y, max_y, halign)
                 end
                 font:write(x, y, line, size, r, g, b, a)
                 y = y + size
+                height = height + size
                 line = text[paragraph][word]
             else
                 line = test_line
