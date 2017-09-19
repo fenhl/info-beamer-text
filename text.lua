@@ -1,11 +1,21 @@
-function write_inner(font, text, size, min_x, max_x, min_y, max_y, halign)
+function write_inner(font, simulate, text, size, min_x, max_x, min_y, max_y, halign, valign)
     --TODO make the following customizable
     local r = 1
     local g = 1
     local b = 1
     local a = 1
     -- first, calculate y offset from number of lines
-    local y = min_y --TODO valign
+    local y
+    if valign == "top" then
+        y = min_y
+    else
+        local text_height = write_inner(font, true, text, size, min_x, max_x, min_y, max_y, halign, "top").height
+        if valign == "middle" then
+            y = min_y + ((max_y - min_y) - text_height) / 2
+        else -- valign == "bottom"
+            y = max_y - text_height
+        end
+    end
     -- then, draw the text
     local height = 0
     local width = 0
@@ -69,13 +79,15 @@ return function(default_font, WIDTH, HEIGHT)
     return function(args)
         return write_inner(
             args.font or default_font,
+            args.simulate or false,
             args.text,
             args.size or 100,
             args.min_x or (args.size or 100) / 2,
             args.max_x or WIDTH - (args.size or 100) / 2,
             args.min_y or (args.size or 100) / 2,
             args.max_y or HEIGHT - (args.size or 100) / 2,
-            args.halign or "center"
+            args.halign or "center",
+            args.valign or "middle"
         )
     end
 end

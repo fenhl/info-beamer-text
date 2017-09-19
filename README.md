@@ -23,13 +23,13 @@ Features with a checkmark are available, unchecked features are planned.
     {{"This", "is", "a", "paragraph,"}, {"and", "this", "is", "another", "paragraph."}}
     ```
 - [x] Automatic word wrapping
-- [ ] Simulation mode: only determine width and height without rendering
+- [x] Simulation mode: only determine width and height without rendering
 - [x] Custom base text size
 - [ ] Variable text size
 - [ ] Text colors and opacity
 - [x] Specify bounds for the text area
 - [x] Horizontal alignment (left, center, or right)
-- [ ] Vertical alignment (top, middle, or bottom)
+- [x] Vertical alignment (top, middle, or bottom)
 - [ ] Custom word separators, maybe-breaks, and hyphenation
 - [ ] Custom emoji
 - [ ] Unicode emoji
