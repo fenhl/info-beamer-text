@@ -81,7 +81,8 @@ function write_inner(font, simulate, text, size, min_x, max_x, min_y, max_y, ind
     return {
         width=width,
         height=height,
-        final_indent=final_indent
+        final_indent=final_indent,
+        final_indent_space=final_indent + font:width(" ", size)
     }
 end
 
