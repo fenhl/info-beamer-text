@@ -4,7 +4,7 @@ function write_inner(font, simulate, text, size, min_x, max_x, min_y, max_y, hal
     if valign == "top" then
         y = min_y
     else
-        local text_height = write_inner(font, true, text, size, min_x, max_x, min_y, max_y, halign, "top").height
+        local text_height = write_inner(font, true, text, size, min_x, max_x, min_y, max_y, halign, "top", r, g, b, a).height
         if valign == "middle" then
             y = min_y + ((max_y - min_y) - text_height) / 2
         else -- valign == "bottom"
@@ -76,6 +76,18 @@ end
 
 return function(factory_args)
     return function(args)
+        local red
+        local green
+        local blue
+        if args.color ~= nil then
+            red = args.color.r or args.color[1]
+            green = args.color.g or args.color[2]
+            blue = args.color.b or args.color[3]
+        else
+            red = args.r or factory_args.r or 1
+            green = args.g or factory_args.g or 1
+            blue = args.b or factory_args.b or 1
+        end
         return write_inner(
             args.font or factory_args.font,
             args.simulate or false,
@@ -87,9 +99,9 @@ return function(factory_args)
             args.max_y or factory_args.height - (args.size or 100) / 2,
             args.halign or "center",
             args.valign or "middle",
-            args.r or factory_args.r or 1,
-            args.g or factory_args.g or 1,
-            args.b or factory_args.b or 1,
+            red,
+            green,
+            blue,
             args.a or factory_args.a or 1
         )
     end
