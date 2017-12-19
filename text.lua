@@ -1,9 +1,4 @@
-function write_inner(font, simulate, text, size, min_x, max_x, min_y, max_y, halign, valign)
-    --TODO make the following customizable
-    local r = 1
-    local g = 1
-    local b = 1
-    local a = 1
+function write_inner(font, simulate, text, size, min_x, max_x, min_y, max_y, halign, valign, r, g, b, a)
     -- first, calculate y offset from number of lines
     local y
     if valign == "top" then
@@ -79,19 +74,23 @@ function write_inner(font, simulate, text, size, min_x, max_x, min_y, max_y, hal
     return {width=width, height=height}
 end
 
-return function(default_font, WIDTH, HEIGHT)
+return function(factory_args)
     return function(args)
         return write_inner(
-            args.font or default_font,
+            args.font or factory_args.font,
             args.simulate or false,
             args.text,
             args.size or 100,
             args.min_x or (args.size or 100) / 2,
-            args.max_x or WIDTH - (args.size or 100) / 2,
+            args.max_x or factory_args.width - (args.size or 100) / 2,
             args.min_y or (args.size or 100) / 2,
-            args.max_y or HEIGHT - (args.size or 100) / 2,
+            args.max_y or factory_args.height - (args.size or 100) / 2,
             args.halign or "center",
-            args.valign or "middle"
+            args.valign or "middle",
+            args.r or factory_args.r or 1,
+            args.g or factory_args.g or 1,
+            args.b or factory_args.b or 1,
+            args.a or factory_args.a or 1
         )
     end
 end
