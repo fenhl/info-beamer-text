@@ -37,7 +37,7 @@ function write_inner(font, simulate, text, size, min_x, max_x, min_y, max_y, ind
                 test_line = line .. " " .. text[paragraph][word]
             end
             line_width = font:width(test_line, size)
-            if line_width > (max_x - min_x) and line ~= "" then
+            if (x ~= nil and line_width > (max_x - x)) or (line_width > (max_x - min_x) and line ~= "") then
                 if x ~= nil then
                     x = x
                 elseif halign == "left" then
