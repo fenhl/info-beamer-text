@@ -26,7 +26,7 @@ Features with a checkmark are available, unchecked features are planned.
 - [x] Simulation mode: only determine width and height without rendering
 - [x] Custom base text size
 - [ ] Variable text size
-- [ ] Text colors and opacity
+- [x] Text colors and opacity
 - [x] Specify bounds for the text area
 - [x] Horizontal alignment (left, center, or right)
 - [x] Vertical alignment (top, middle, or bottom)
