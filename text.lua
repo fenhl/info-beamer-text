@@ -104,7 +104,7 @@ return function(factory_args)
             args.font or factory_args.font,
             args.simulate or false,
             args.text,
-            args.size or 100,
+            args.size or factory_args.size or 100,
             args.min_x or (args.size or 100) / 2,
             args.max_x or factory_args.width - (args.size or 100) / 2,
             args.min_y or (args.size or 100) / 2,
