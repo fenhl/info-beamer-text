@@ -25,7 +25,10 @@ Features with a checkmark are available, unchecked features are planned.
 - [x] Automatic word wrapping
 - [x] Simulation mode: only determine width and height without rendering
 - [x] Custom base text size
-- [ ] Variable text size
+- [x] Variable text size:
+    ```lua
+    {{"Individual", "words", "can", "be", {word="bigger", size=200}, "or", {word="smaller", size=50}, {word=".", space_before=false}}}
+    ```
 - [x] Text colors and opacity
 - [x] Specify bounds for the text area
 - [x] Horizontal alignment (left, center, or right)

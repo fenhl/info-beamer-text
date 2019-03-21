@@ -1,3 +1,35 @@
+function space_before(first_of_line, formatted_word)
+    if formatted_word.space_before == nil then
+        return not first_of_line
+    else
+        return formatted_word.space_before
+    end
+end
+
+function write_formatted_line(x, y, halign, min_x, max_x, line_width, line_height, simulate, line)
+    if x ~= nil then
+        x = x
+    elseif halign == "left" then
+        x = min_x
+    elseif halign == "center" then
+        x = min_x + ((max_x - min_x) - line_width) / 2
+    elseif halign == "right" then
+        x = max_x - line_width
+    end
+    if not simulate then
+        for i = 1, #line do
+            local text
+            if space_before(i == 1, line[i]) then
+                text = " " .. line[i].word
+            else
+                text = line[i].word
+            end
+            x = x + line[i].font:write(x, y + line_height - line[i].size, text, line[i].size, line[i].r, line[i].g, line[i].b, line[i].a)
+        end
+    end
+    return x
+end
+
 function write_inner(font, simulate, text, size, min_x, max_x, min_y, max_y, indent, halign, valign, r, g, b, a)
     -- first, calculate y offset from number of lines
     local y
@@ -14,69 +46,85 @@ function write_inner(font, simulate, text, size, min_x, max_x, min_y, max_y, ind
     -- then, draw the text
     local height = 0
     local width = 0
-    local line
-    local line_width
     local num_paragraphs = #text
-    local num_words
-    local test_line
     local x = indent
     local final_indent = min_x
     for paragraph = 1, num_paragraphs do
         if paragraph > 1 then
-            y = y + size * 1.5
-            height = height + size * 1.5
-        else
-            height = height + size
+            y = y + size * 0.5
+            height = height + size * 0.5
         end
-        line = ""
-        num_words = #text[paragraph]
-        for word = 1, num_words do
-            if line == "" then
-                test_line = text[paragraph][word]
+        local line_width = 0
+        local line_height = 0
+        local line = {}
+        for word = 1, #text[paragraph] do
+            local formatted_word
+            if type(text[paragraph][word]) == "table" then
+                local red
+                local green
+                local blue
+                if text[paragraph][word].color ~= nil then
+                    red = text[paragraph][word].color.r or text[paragraph][word].color[1]
+                    green = text[paragraph][word].color.g or text[paragraph][word].color[2]
+                    blue = text[paragraph][word].color.b or text[paragraph][word].color[3]
+                else
+                    red = text[paragraph][word].r or r
+                    green = text[paragraph][word].g or g
+                    blue = text[paragraph][word].b or b
+                end
+                formatted_word = {
+                    font=text[paragraph][word].font or font,
+                    word=text[paragraph][word].word,
+                    size=text[paragraph][word].size or size,
+                    space_before=text[paragraph][word].space_before,
+                    r=red,
+                    g=green,
+                    b=blue,
+                    a=text[paragraph][word].a or a
+                }
             else
-                test_line = line .. " " .. text[paragraph][word]
+                formatted_word = {
+                    font=font,
+                    word=text[paragraph][word],
+                    size=size,
+                    space_before=nil,
+                    r=r,
+                    g=g,
+                    b=b,
+                    a=a
+                }
             end
-            line_width = font:width(test_line, size)
-            if (x ~= nil and line_width > (max_x - x)) or (line_width > (max_x - min_x) and line ~= "") then
-                if x ~= nil then
-                    x = x
-                elseif halign == "left" then
-                    x = min_x
-                elseif halign == "center" then
-                    x = min_x + ((max_x - min_x) - font:width(line, size)) / 2
-                elseif halign == "right" then
-                    x = max_x - font:width(line, size)
-                end
-                if not simulate then
-                    font:write(x, y, line, size, r, g, b, a)
-                end
-                y = y + size
-                x = nil
-                height = height + size
-                line = text[paragraph][word]
-                if font:width(line, size) > width then
-                    width = font:width(line, size)
-                end
+            local test_line_width
+            if space_before(#line == 0, formatted_word) then
+                test_line_width = line_width + formatted_word.font:width(" " .. formatted_word.word, formatted_word.size)
             else
-                line = test_line
+                test_line_width = line_width + formatted_word.font:width(formatted_word.word, formatted_word.size)
+            end
+            if (x ~= nil and test_line_width > (max_x - x)) or (test_line_width > (max_x - min_x) and line ~= "") then
+                write_formatted_line(x, y, halign, min_x, max_x, line_width, line_height, simulate, line)
+                y = y + line_height
+                x = nil
+                line = {formatted_word}
                 if line_width > width then
                     width = line_width
                 end
+                height = height + line_height
+                line_width = formatted_word.font:width(formatted_word.word, formatted_word.size)
+                line_height = formatted_word.size
+            else
+                line[#line + 1] = formatted_word
+                if formatted_word.size > line_height then
+                    line_height = formatted_word.size
+                end
+                line_width = test_line_width
             end
         end
-        if x ~= nil then
-            x = x
-        elseif halign == "left" then
-            x = min_x
-        elseif halign == "center" then
-            x = min_x + ((max_x - min_x) - font:width(line, size)) / 2
-        elseif halign == "right" then
-            x = max_x - font:width(line, size)
+        final_indent = write_formatted_line(x, y, halign, min_x, max_x, line_width, line_height, simulate, line)
+        y = y + line_height
+        if line_width > width then
+            width = line_width
         end
-        if not simulate then
-            font:write(x, y, line, size, r, g, b, a)
-        end
-        final_indent = x + font:width(line, size)
+        height = height + line_height
     end
     return {
         width=width,
