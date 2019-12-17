@@ -19,5 +19,9 @@ end)
 
 function node.render()
     gl.clear(0, 0, 0, 1)
-    write{text=data}
+    if data == json.null then
+        write{text={{"" .. WIDTH .. "x" .. HEIGHT}}}
+    else
+        write{text=data}
+    end
 end
