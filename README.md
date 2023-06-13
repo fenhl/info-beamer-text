@@ -1,3 +1,5 @@
+**Maintenance notice:** This project is no longer maintained since I no longer use info-beamer. If you would like me to add a link to a maintained fork, please ping me in an issue.
+
 This is a helper library for rendering rich text with [info-beamer](https://github.com/dividuum/info-beamer).
 
 # Usage
